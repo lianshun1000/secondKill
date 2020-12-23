@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+
+<generatorConfiguration>
+    <!--这个是你springboot的配置文件，它会加载spring的配置-->
+    <!--     <properties resource="application.yml"/> -->
+
+    <!-- 必须要有这个 mysql驱动的位置 这个是MySQL连接的jar包，你需要指定你自己计算机上的jar包的位置，我用的自己本机的maven仓库的，注意别只复制这个jar存在的路径，在最后边要加上jar的名字哦。细节细节-->
+    <!--<classPathEntry location="C:\Users\zhilong.zhang\.m2\repository\mysql\mysql-connector-java\8.0.16\mysql-connector-java-8.0.16.jar"/>-->
+    <context id="Tables" targetRuntime="MyBatis3">
+
+        <!-- 生成 JavaBean 对象重写 toString方法 -->
+       <!-- <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+        <!-- 取消生成注释 -->
+        <!--<commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>-->
+
+        <!--这是mysql连接的配置信息，DriverClass的路径是否存在 cj 看自己mysql连接的版本   5.xx没有cj。6.xx的有cj-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://115.159.57.187:3306/second"
+                        userId="lianshun"
+                        password="lymh2ls2">
+            <!--这个很重要，没有的话，会发生一些奇怪的问题，稍后细讲！-->
+            <!--<property name="nullCatalogMeansCurrent" value="true" />-->
+
+        </jdbcConnection>
+
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和NUMERIC 类型解析为java.math.BigDecimal  涉及金额就要注意了哟-->
+       <!-- <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>-->
+
+        <!--指定javaBean生成的位置 targetProject="./src/main/java" 注意src前面有个zf-->
+        <!--targetPackage="com.chenggongyuan.xunjian.pojo",这里是自己项目的名字，下面的都得替换成自己的项目名称-->
+        <javaModelGenerator targetPackage="com.miaoshaproject.dataobject"
+                            targetProject="src/main/java">
+            <!--这个为true 逆向工程可能会生成子包-->
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 指定sql映射文件生成位置 -->
+        <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- 指定dao接口生成的位置，mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.miaoshaproject.dao"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 制定每个表的生成策略 这里可以写多个表，表名和需要生成的pojo名写正确 -->
+        <table tableName="user_info" domainObjectName="UserDo" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="user_password" domainObjectName="UserPasswordDo" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+    </context>
+</generatorConfiguration>

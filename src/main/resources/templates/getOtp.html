@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>getOtp</title>
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}" media="all"/>
+
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>获取otp信息</legend>
+</fieldset>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">输入手机号</label>
+        <div class="layui-input-block">
+            <input type="text" name="telephone" id="required|telephone" autocomplete="off" placeholder="手机号" class="layui-input" lay-verify="phone">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button  id="getotp" class="layui-btn" lay-submit="" lay-filter="telephone-submit">获取otp短信</button>
+    </div>
+</form>
+
+<!-- Jquery Js -->
+<script type="text/javascript" src="js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<!-- Layui Js -->
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script>
+    layui.use(['form'], function(){
+        var form = layui.form;
+
+        //提交
+        form.on('submit(telephone-submit)', function(obj){
+
+            //请求登入接口
+            $.ajax({
+                url: 'http://localhost:8081/user/getOtp'
+                ,data: obj.field
+                ,type:'POST'
+                ,contentType:"application/x-www-form-urlencoded"
+                ,success: function(res){
+                    if(res.status == "success"){
+                        console.log(res.data);
+                        layer.alert("otp已经发送到您手机上，请注意查收",{
+                            title:"",
+                            btn: ['Yes']
+                        });
+                    }else{
+                        layer.alert("otp发送失败，原因为"+res.data.errMsg,{
+                            title:"",
+                            btn: ['Yes']
+                        });
+                    }
+
+                }
+                ,error:function(error){
+                    layer.alert("otp发送失败，原因为"+error.responseTextr,{
+                        title:"",
+                        btn: ['Yes']
+                    });
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>
