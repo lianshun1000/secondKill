@@ -24,3 +24,12 @@ jobs:
 
       - name: Build JavaSE Tutorial
         run: mvn clean package -DskipTests=true
+
+      - name: Push Image
+        run: |
+          image=secondKill
+          docker build -f Dockerfile  -t ${image} .
+          docker login --username=lianshun1000 --password=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }} registry.cn-shanghai.aliyuncs.com
+          docker tag $image registry.cn-shanghai.aliyuncs.com/lianshun/$image
+          docker push registry.cn-shanghai.aliyuncs.com/lianshun/$image
+          echo "image:" ${image}
