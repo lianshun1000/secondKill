@@ -27,7 +27,7 @@ jobs:
 
       - name: Push Image
         run: |
-          image=secondKill:latest
+          image=second-kill:latest
           docker build -f Dockerfile  -t ${image} .
           docker login --username=lianshun1000 --password=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }} registry.cn-shanghai.aliyuncs.com
           docker tag $image registry.cn-shanghai.aliyuncs.com/lianshun/$image
