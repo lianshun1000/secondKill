@@ -27,7 +27,8 @@ jobs:
 
       - name: Push Image
         run: |
-          image=second-kill:latest
+          echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
+          image=second-kill:${TAG}
           docker build -f Dockerfile  -t ${image} .
           docker login --username=lianshun1000 --password=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }} registry.cn-shanghai.aliyuncs.com
           docker tag $image registry.cn-shanghai.aliyuncs.com/lianshun/$image
